@@ -1,0 +1,122 @@
+{
+  "metadata": {
+    "version": 1,
+    "disable_limits": false,
+    "instance_type": "ml.m5.4xlarge",
+    "disable_validation": true
+  },
+  "parameters": [],
+  "nodes": [
+    {
+      "node_id": "aecea1d1-fa82-4285-86fa-6ae84a26863b",
+      "type": "SOURCE",
+      "operator": "sagemaker.s3_source_0.1",
+      "parameters": {
+        "dataset_definition": {
+          "__typename": "S3CreateDatasetDefinitionOutput",
+          "datasetSourceType": "S3",
+          "name": "Telco-Customer-Churn.csv",
+          "description": null,
+          "s3ExecutionContext": {
+            "__typename": "S3ExecutionContext",
+            "s3Uri": "s3://markos-telco-churn/ingest/Telco-Customer-Churn.csv",
+            "s3ContentType": "csv",
+            "s3HasHeader": true,
+            "s3FieldDelimiter": ",",
+            "s3CsvEncodingType": "utf-8",
+            "s3DirIncludesNested": false,
+            "s3AddsFilenameColumn": false,
+            "s3RoleArn": "",
+            "s3SkipLines": 0
+          }
+        }
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "default",
+          "sampling": {
+            "sampling_method": "sample_by_limit",
+            "limit_rows": 50000
+          }
+        }
+      ]
+    },
+    {
+      "node_id": "11b30de4-ac00-4873-875f-8ff6124b34d5",
+      "type": "TRANSFORM",
+      "operator": "sagemaker.spark.infer_and_cast_type_0.1",
+      "parameters": {},
+      "trained_parameters": {
+        "schema": {
+          "customerID": "string",
+          "gender": "string",
+          "SeniorCitizen": "long",
+          "Partner": "string",
+          "Dependents": "string",
+          "tenure": "long",
+          "PhoneService": "string",
+          "MultipleLines": "string",
+          "InternetService": "string",
+          "OnlineSecurity": "string",
+          "OnlineBackup": "string",
+          "DeviceProtection": "string",
+          "TechSupport": "string",
+          "StreamingTV": "string",
+          "StreamingMovies": "string",
+          "Contract": "string",
+          "PaperlessBilling": "string",
+          "PaymentMethod": "string",
+          "MonthlyCharges": "float",
+          "TotalCharges": "float",
+          "Churn": "string"
+        }
+      },
+      "inputs": [
+        {
+          "name": "default",
+          "node_id": "aecea1d1-fa82-4285-86fa-6ae84a26863b",
+          "output_name": "default"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "default"
+        }
+      ]
+    },
+    {
+      "node_id": "ccc3de29-cad3-401d-a076-6593c3b5a471",
+      "type": "VISUALIZATION",
+      "operator": "sagemaker.visualizations.bias_report_0.1",
+      "parameters": {
+        "name": "Bias Report Gender",
+        "is_label_value_or_threshold": "value",
+        "is_facet_value_or_threshold": "value",
+        "default_metrics": {
+          "CI": true,
+          "DPL": true,
+          "JS": true,
+          "CDDL": false
+        },
+        "show_additional_metrics": "no",
+        "facet_values": "Male",
+        "label_name": "Churn",
+        "facet_name": "gender",
+        "label_values": "1"
+      },
+      "inputs": [
+        {
+          "name": "df",
+          "node_id": "11b30de4-ac00-4873-875f-8ff6124b34d5",
+          "output_name": "default"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "default"
+        }
+      ]
+    }
+  ]
+}

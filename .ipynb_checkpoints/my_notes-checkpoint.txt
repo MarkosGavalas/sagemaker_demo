@@ -1,0 +1,15 @@
+	1. Git Integration (message send)
+		Jan Dahms
+		Dominik Timmerhoff (TL)
+		Arthur Fuchs
+		
+	2. Sagemaker Experiments / Model Registry
+	3. Feature Store
+	4. Improve model : Auto tune -> binary instead of multiclass 1.2.2
+	5. Clarify / Explainability
+	6. Sagemaker Pipeline
+	7. Visialization -> add model batch prediction, augument with sagemaker (use manifest - dates not possible)
+	8. IaC über CDK
+Codepipline
+
+# autotune respects the range given in hyperparameters
